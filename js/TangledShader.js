@@ -55,7 +55,8 @@
 		var p = document.querySelector('.TangledShader-tangleScript');
 		p.classList.remove("is-Error");
 		var strP            = "";
-		var reg             = new RegExp(/(?![vec]|\(|[GLSLIFY\s]|[mat]|\,|\*|\-|\+|[sampler]|\=|\/|\<|\>).\d*\.+\d+/g);
+		// var reg             = new RegExp(/(?![vec]|\(|[GLSLIFY\s]|[mat]|\,|\*|\-|\+|[sampler]|\=|\/|\<|\>).\d*\.+\d+/g);
+		var reg             = new RegExp(/\d*\.+\d+/g);
 		var match;
 		var values          = [];
 		var i               = 0;

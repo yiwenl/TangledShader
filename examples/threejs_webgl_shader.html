@@ -61,8 +61,8 @@ void main()	{
 	vec2 p = -1.0 + 2.0 * gl_FragCoord.xy / resolution.xy;
 	float a = time*40.0;
 	float d,e,f,g=1.0/40.0,h,i,r,q;
-	e=400.0*(p.x*0.5+0.5);
-	f=400.0*(p.y*0.5+0.5);
+	e=400.0*(p.x*0.5+.5);
+	f=400.0*(p.y*0.5+.5);
 	i=200.0+sin(e*g+a/150.0)*20.0;
 	d=200.0+cos(f*g/2.0)*18.0+cos(e*g)*7.0;
 	r=sqrt(pow(i-e,2.0)+pow(d-f,2.0));
@@ -146,8 +146,6 @@ void main()	{
 
 
 			function shaderUpdated( shader ) {
-				console.log('New Shader : ', shader);
-
 				var material = new THREE.ShaderMaterial( {
 
 					uniforms: uniforms,
