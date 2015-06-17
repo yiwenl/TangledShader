@@ -16,7 +16,7 @@ h1, h2, h3, h4, text, p {
   -webkit-font-smoothing: antialiased;
   -moz-osx-webkit-font-smoothing: antialiased; }
 
-.Shader-Tangle {
+.TangledShader-tangleScript {
   font-family: Courier;
   font-size: .8em;
   color: white;
@@ -30,17 +30,17 @@ h1, h2, h3, h4, text, p {
   margin: 0px;
   padding: 20px;
   box-sizing: border-box;
-  overflow: scroll;
+  overflow-y: scroll;
   transition: all .65s ease-out; }
-  .Shader-Tangle.is-Error {
+  .TangledShader-tangleScript.is-Error {
     background: rgba(150, 0, 0, 0.5); }
-  .is-Closed .Shader-Tangle {
+  .is-Closed .TangledShader-tangleScript {
     -webkit-transform: translate(50%, 0);
     transform: translate(50%, 0);
     opacity: 0;
     pointer-events: none; }
 
-.Tangle-Button {
+.TangledShader-closeButton {
   width: 24px;
   height: 24px;
   position: absolute;
@@ -49,10 +49,10 @@ h1, h2, h3, h4, text, p {
   z-index: 9;
   cursor: pointer;
   transition: all .5s ease-in-out; }
-  .is-Closed .Tangle-Button {
+  .is-Closed .TangledShader-closeButton {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg); }
-  .Tangle-Button:before {
+  .TangledShader-closeButton:before {
     position: absolute;
     content: '';
     width: 12px;
@@ -61,7 +61,7 @@ h1, h2, h3, h4, text, p {
     -webkit-transform: translate(6px, 8px) rotate(45deg);
     transform: translate(6px, 8px) rotate(45deg);
     transition: all .5s ease-out; }
-  .Tangle-Button:after {
+  .TangledShader-closeButton:after {
     position: absolute;
     content: '';
     width: 12px;
@@ -70,5 +70,5 @@ h1, h2, h3, h4, text, p {
     -webkit-transform: translate(6px, 16px) rotate(-45deg);
     transform: translate(6px, 16px) rotate(-45deg);
     transition: all .5s ease-out; }
-  .Tangle-Button:hover:before, .Tangle-Button:hover:after {
+  .TangledShader-closeButton:hover:before, .TangledShader-closeButton:hover:after {
     background: white; }
