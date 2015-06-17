@@ -1,13 +1,16 @@
 (function() {
 	var formHTMLString = function(str) {	return str.replace(/\>/g, "&gt").replace(/\</g, "&lt");	};
 
-	TangledShader = function(gl, shader, callback) {
+	TangledShader = function(gl, shader, callback, textOnly) {
 		if(!gl) {	console.warn("Error , No WebGL Context");	}
 		if(!shader) {	console.warn("Error , No WebGL Shader");	}
+
+		if(shader.split !== undefined) textOnly = true;
 
 		this._callback = callback;
 		this.gl        = gl;
 		this._shader   = shader;
+		this._textOnly = textOnly === undefined ? false : textOnly;
 
 		this._init();
 	}
@@ -16,7 +19,14 @@
 
 	p._init = function() {
 		this._tangleBind = this._tangle.bind(this);
-		var strShader = this.gl.getShaderSource(this._shader);
+
+		var strShader;
+		if(this._textOnly) {
+			strShader = this._shader;
+		} else {
+			strShader = this.gl.getShaderSource(this._shader);
+		}
+		 
 		
 		this._uiContainer = document.createElement("div");
 		this._uiContainer.className = "TangledShader";
@@ -45,7 +55,7 @@
 		var p = document.querySelector('.TangledShader-tangleScript');
 		p.classList.remove("is-Error");
 		var strP            = "";
-		var reg             = new RegExp(/(?![vec]|[\(]|[GLSLIFY\s]|[mat]|[\,]|[\*]|[\-]|[\+]|[sampler]).\d*\.+\d+/g);
+		var reg             = new RegExp(/(?![vec]|\(|[GLSLIFY\s]|[mat]|\,|\*|\-|\+|[sampler]|\=|\/|\<|\>).\d*\.+\d+/g);
 		var match;
 		var values          = [];
 		var i               = 0;
@@ -112,6 +122,11 @@
 		}
 
 		strNewShader += this._tangleStrings[this._tangleStrings.length-1];
+
+		if(this._textOnly) {
+			this._callback(strNewShader);
+			return;
+		}
 
 		this.gl.shaderSource(this._shader, strNewShader);
 		this.gl.compileShader(this._shader);
