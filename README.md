@@ -8,7 +8,8 @@ https://github.com/worrydream/Tangle
 new TangledShader(gl, shader, [callbackFunc]);
 </pre>
 you'll need to pass in the WebGL context (gl), the WebGL Shader (shader) and the callback function.
-e.g. 
+
+<br />
 
 <pre>
 new TangledShader(gl, fragment_shader, shaderUpdated);
