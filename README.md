@@ -2,7 +2,7 @@
 
 A simple tool for adjust the shader, build with Tangle Library by [Bret Victor @worrydream](http://worrydream.com/)<br />
 https://github.com/worrydream/Tangle
-
+<br />
 ## Usage
 <pre>
 new TangledShader(gl, shader, [callbackFunc]);
