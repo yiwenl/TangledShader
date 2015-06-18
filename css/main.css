@@ -1,74 +1,115 @@
 html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  position: static;
-  background: #151413; }
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	position: static;
+	background: #151413; }
 
 html {
-  -webkit-text-size-adjust: none;
-  -ms-text-size-adjust: none;
-  text-size-adjust: none; }
+	-webkit-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	text-size-adjust: none; }
 
-h1, h2, h3, h4, text, p {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, text, p, textarea {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-webkit-font-smoothing: antialiased; }
+
+
+textarea {
+	border: none;
+	overflow: auto;
+	outline: none;
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
 
 .TangledShader-tangleScript {
-  font-family: Courier;
-  font-size: .8em;
-  color: white;
-  position: fixed;
-  right: 0px;
-  top: 0px;
-  width: 40%;
-  height: 100%;
-  background: #000;
-  opacity: .8;
-  margin: 0px;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-y: scroll;
-  transition: all .65s ease-out; }
-  .TangledShader-tangleScript.is-Error {
-    background: rgba(150, 0, 0, 0.5); }
-  .is-Closed .TangledShader-tangleScript {
-    -webkit-transform: translate(50%, 0);
-    transform: translate(50%, 0);
-    opacity: 0;
-    pointer-events: none; }
+	font-family: Courier;
+	font-size: .8em;
+	color: white;
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	width: 40%;
+	height: 50%;
+	background: rgba(0, 0, 0, .8);
+	margin: 0px;
+	padding: 20px;
+	box-sizing: border-box;
+	overflow-y: scroll;
+	transition: all .35s ease-out; }
+	.TangledShader-tangleScript.is-Error {
+		background: rgba(150, 0, 0, 0.5); }
+	.is-Closed .TangledShader-tangleScript {
+		-webkit-transform: translate(50%, 0);
+		transform: translate(50%, 0);
+		opacity: 0;
+		pointer-events: none; }
+
+.TangledShader-tangleScript--editor {
+	top:50%;
+	background: rgba(33, 33, 33, .8);
+	/*color:black;*/
+	border: 1px solid rgba(255, 255, 255, .2);
+
+	border: none;
+	overflow: auto;
+	outline: none;
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	
+}
 
 .TangledShader-closeButton {
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 9;
-  cursor: pointer;
-  transition: all .5s ease-in-out; }
-  .is-Closed .TangledShader-closeButton {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg); }
-  .TangledShader-closeButton:before {
-    position: absolute;
-    content: '';
-    width: 12px;
-    height: 1px;
-    background: gray;
-    -webkit-transform: translate(6px, 8px) rotate(45deg);
-    transform: translate(6px, 8px) rotate(45deg);
-    transition: all .5s ease-out; }
-  .TangledShader-closeButton:after {
-    position: absolute;
-    content: '';
-    width: 12px;
-    height: 1px;
-    background: gray;
-    -webkit-transform: translate(6px, 16px) rotate(-45deg);
-    transform: translate(6px, 16px) rotate(-45deg);
-    transition: all .5s ease-out; }
-  .TangledShader-closeButton:hover:before, .TangledShader-closeButton:hover:after {
-    background: white; }
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 9;
+	cursor: pointer;
+	transition: all .5s ease-in-out; }
+	.is-Closed .TangledShader-closeButton {
+		-webkit-transform: rotate(180deg);
+		transform: rotate(180deg); }
+	.TangledShader-closeButton:before {
+		position: absolute;
+		content: '';
+		width: 12px;
+		height: 1px;
+		background: gray;
+		-webkit-transform: translate(6px, 8px) rotate(45deg);
+		transform: translate(6px, 8px) rotate(45deg);
+		transition: all .5s ease-out; }
+	.TangledShader-closeButton:after {
+		position: absolute;
+		content: '';
+		width: 12px;
+		height: 1px;
+		background: gray;
+		-webkit-transform: translate(6px, 16px) rotate(-45deg);
+		transform: translate(6px, 16px) rotate(-45deg);
+		transition: all .5s ease-out; }
+	.TangledShader-closeButton:hover:before, .TangledShader-closeButton:hover:after {
+		background: white; }
+
+
+.TangledShader-updateButton {
+	position: absolute;
+	right:30px;
+	bottom:calc(50% - 30px);
+	transition: all .35s ease-out
+}
+
+.is-Closed .TangledShader-updateButton {
+	-webkit-transform: translate(50%, 0);
+	transform: translate(50%, 0);
+	opacity: 0;
+	pointer-events: none; }

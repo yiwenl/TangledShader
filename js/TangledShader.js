@@ -28,18 +28,50 @@
 		}
 		 
 		
+		//	INIT UI
 		this._uiContainer = document.createElement("div");
 		this._uiContainer.className = "TangledShader";
 		document.body.appendChild(this._uiContainer);
-		var p = document.createElement("p");
-		this._uiContainer.appendChild(p);
-		p.className = "TangledShader-tangleScript";
+		this.tangleScript = document.createElement("p");
+		this._uiContainer.appendChild(this.tangleScript);
+		this.tangleScript.className = "TangledShader-tangleScript";
 		this._formTangle(strShader);
 
+		this.editor = document.createElement("textarea");
+		this._uiContainer.appendChild(this.editor);
+		this.editor.className = "TangledShader-tangleScript TangledShader-tangleScript--editor";
+		this.editor.innerHTML = strShader;
+		
 		this.btnArrow = document.createElement("div");
 		this.btnArrow.className = "TangledShader-closeButton";
 		this._uiContainer.appendChild(this.btnArrow);
 		this.btnArrow.addEventListener("click", this._onToggle.bind(this));
+
+		this.btnUpdate = document.createElement("button");
+		this.btnUpdate.innerHTML = "UPDATE SHADER";
+		this.btnUpdate.className = "TangledShader-updateButton";
+		this._uiContainer.appendChild(this.btnUpdate);
+		this.btnUpdate.addEventListener("click", this._onUpdate.bind(this));
+		console.log(this.btnUpdate);
+
+		this._formTangle(strShader);
+
+		this.editor.addEventListener("keydown", function(e) {
+			this.classList.remove("is-Error");
+			if(e.keyCode==9 || e.which==9){
+				e.preventDefault();
+				var s = this.selectionStart;
+				this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
+				this.selectionEnd = s+1; 
+			}
+		});
+	};
+
+
+	p._onUpdate = function() {
+		var strShader = this.editor.value;
+		console.log(strShader);
+		this._formTangle(strShader);
 	};
 
 
@@ -52,7 +84,7 @@
 
 
 	p._formTangle = function(str) {
-		var p = document.querySelector('.TangledShader-tangleScript');
+		var p = this.tangleScript;
 		p.classList.remove("is-Error");
 		var strP            = "";
 		// var reg             = new RegExp(/(?![vec]|\(|[GLSLIFY\s]|[mat]|\,|\*|\-|\+|[sampler]|\=|\/|\<|\>).\d*\.+\d+/g);
@@ -135,8 +167,8 @@
 		if(!this.gl.getShaderParameter(this._shader, this.gl.COMPILE_STATUS)) {
 			console.warn("Error in Fragment Shader: ", this.gl.getShaderInfoLog(this._shader));
 			console.warn(this.gl.getShaderSource(this._shader));
-			var p = document.querySelector('.TangledShader-tangleScript');
-			p.classList.add("is-Error");
+			this.tangleScript.classList.add("is-Error");
+			this.editor.classList.add("is-Error");
 			return;
 		}
 		
@@ -161,11 +193,10 @@
 		return s;
 	};
 
-	var cssString = ".TangledShader{}.TangledShader-shaderScript{}.TangledShader-tangleScript{font-family:Courier;font-size:.8em;color:white;position:fixed;right:0px;top:0px;width:40%;height:100%;background:#000;opacity:.8;margin:0px;padding:20px;box-sizing:border-box;overflow-y:scroll;transition:all.65sease-out;&.is-Error{background:rgba(150,0,0,.5);}.is-Closed&{transform:translate(50%,0);opacity:0;pointer-events:none;}}.TangledShader-closeButton{width:24px;height:24px;position:absolute;top:10px;right:10px;z-index:9;cursor:pointer;transition:all.5sease-in-out;.is-Closed&{transform:rotate(180deg);}&:before{position:absolute;content:'';width:12px;height:1px;background:rgba(128,128,128,1);transform:translate(6px,8px)rotate(45deg);transition:all.5sease-out;}&:after{position:absolute;content:'';width:12px;height:1px;background:rgba(128,128,128,1);transform:translate(6px,16px)rotate(-45deg);transition:all.5sease-out;}&:hover{&:before,&:after{background:rgba(255,255,255,1);}}}";
+	var cssString = "html, body {width: 100%;height: 100%;margin: 0;padding: 0;overflow: hidden;position: static;background: #151413; }html {-webkit-text-size-adjust: none;-ms-text-size-adjust: none;text-size-adjust: none; }h1, h2, h3, h4, text, p, textarea {-webkit-font-smoothing: antialiased;-moz-osx-webkit-font-smoothing: antialiased; }textarea {border: none;overflow: auto;outline: none;-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;}.TangledShader-tangleScript {font-family: Courier;font-size: .8em;color: white;position: fixed;right: 0px;top: 0px;width: 40%;height: 50%;background: rgba(0, 0, 0, .8);margin: 0px;padding: 20px;box-sizing: border-box;overflow-y: scroll;transition: all .35s ease-out; }.TangledShader-tangleScript.is-Error {background: rgba(150, 0, 0, 0.5); }.is-Closed .TangledShader-tangleScript {-webkit-transform: translate(50%, 0);transform: translate(50%, 0);opacity: 0;pointer-events: none; }.TangledShader-tangleScript--editor {top:50%;background: rgba(33, 33, 33, .8);/*color:black;*/border: 1px solid rgba(255, 255, 255, .2);border: none;overflow: auto;outline: none;-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;}.TangledShader-closeButton {width: 24px;height: 24px;position: absolute;top: 10px;right: 10px;z-index: 9;cursor: pointer;transition: all .5s ease-in-out; }.is-Closed .TangledShader-closeButton {-webkit-transform: rotate(180deg);transform: rotate(180deg); }.TangledShader-closeButton:before {position: absolute;content: '';width: 12px;height: 1px;background: gray;-webkit-transform: translate(6px, 8px) rotate(45deg);transform: translate(6px, 8px) rotate(45deg);transition: all .5s ease-out; }.TangledShader-closeButton:after {position: absolute;content: '';width: 12px;height: 1px;background: gray;-webkit-transform: translate(6px, 16px) rotate(-45deg);transform: translate(6px, 16px) rotate(-45deg);transition: all .5s ease-out; }.TangledShader-closeButton:hover:before, .TangledShader-closeButton:hover:after {background: white; }.TangledShader-updateButton {position: absolute;right:30px;bottom:calc(50% - 30px);transition: all .35s ease-out}.is-Closed .TangledShader-updateButton {-webkit-transform: translate(50%, 0);transform: translate(50%, 0);opacity: 0;pointer-events: none; }";
 	var doc = document;
 	var injected = document.createElement('style');
 	injected.type = 'text/css';
 	injected.innerHTML = cssString;
 	doc.getElementsByTagName('head')[0].appendChild(injected);
-
 })();
