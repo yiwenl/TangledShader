@@ -2,8 +2,9 @@
 
 ![alt text](http://www.bongiovi.tw/projects/tangledShader/tangledShader.jpg)
 <br />
-A simple tool for adjust the shader, build with Tangle Library by [Bret Victor @worrydream](http://worrydream.com/)<br />
-https://github.com/worrydream/Tangle
+A simple tool for adjust the shader, build with [Tangle Library](https://github.com/worrydream/Tangle) by [Bret Victor @worrydream](http://worrydream.com/) 
+<br />
+[Live Demo here](http://yiwenl.github.io/TangledShader/)
 <br />
 
 ## Usage
@@ -11,7 +12,7 @@ https://github.com/worrydream/Tangle
 new TangledShader(gl, shader, [callbackFunc, textOnly]);
 </pre>
 <br />
-you'll need to pass in the WebGL context (gl), the WebGL Shader or the shader string (shader) and the callback function. There's an optional parameter "textOnly" which will indicate if it's in text only mode. Which will just return the updated shader string but not the WebGL Shader.
+You'll need to pass in the WebGL context (gl), the WebGL Shader or the shader string (shader) and the callback function. There's an optional parameter "textOnly" which will indicate if it's in text only mode. Which will just return the updated shader string but not the WebGL Shader.
 
 <br />
 <br />
