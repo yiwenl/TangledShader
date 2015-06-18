@@ -2,7 +2,7 @@
 
 ![alt text](http://www.bongiovi.tw/projects/tangledShader/tangledShader.jpg)
 <br />
-A simple tool for adjust the shader, build with [Tangle Library](https://github.com/worrydream/Tangle) by [Bret Victor @worrydream](http://worrydream.com/) 
+A simple tool for adjusting the shader, build with [Tangle Library](https://github.com/worrydream/Tangle) by [Bret Victor @worrydream](http://worrydream.com/) 
 <br />
 [Live Demo here](http://yiwenl.github.io/TangledShader/)
 <br />
