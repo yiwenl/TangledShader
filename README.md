@@ -15,6 +15,7 @@ new TangledShader(gl, shader, [callbackFunc, textOnly]);
 You'll need to pass in the WebGL context (gl), the WebGL Shader or the shader string (shader) and the callback function. There's an optional parameter "textOnly" which will indicate if it's in text only mode. Which will just return the updated shader string but not the WebGL Shader.
 
 <br />
+---
 <br />
 ### With WebGL Shader
 <pre>
