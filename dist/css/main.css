@@ -34,7 +34,8 @@ header {
   color: white;
   padding: 20px;
   font-size: 14px;
-  /*background: white;*/ }
+  z-index: 99;
+  position: absolute; }
 
 .Main-Canvas {
   position: absolute;
