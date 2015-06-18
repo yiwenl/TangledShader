@@ -16,7 +16,6 @@ You'll need to pass in the WebGL context (gl), the WebGL Shader or the shader st
 
 <br />
 ---
-<br />
 ### With WebGL Shader
 <pre>
 new TangledShader(gl, fragment_shader, shaderUpdated); 
@@ -34,7 +33,7 @@ function shaderUpdated( shader ) {
 </pre>
 
 <br />
-<br />
+---
 ###With Shader String (e.g. using three.js)
 <pre>
 new TangledShader(renderer.context, fragment_shader, shaderUpdated);
