@@ -4493,154 +4493,7 @@ p._resize = function() {
 };
 
 module.exports = SceneApp;
-},{"./ViewMountain":6,"./ViewNoise":7,"./ViewNormal":8}],5:[function(require,module,exports){
-// ShaderTangle.js
-var GL = bongiovi.GL;
-var gl;
-var formHTMLString = function(str) {	return str.replace(/\>/g, "&gt").replace(/\</g, "&lt");	};
-
-
-function ShaderTangle() {
-	this.isOpened = true;
-}
-
-
-var p = ShaderTangle.prototype;
-
-p.load = function(mShader, mShaderProgram) {
-	if(!gl) gl = GL.gl;
-
-	this._shader = mShader;
-	this._program = mShaderProgram;
-	this._tangleBind = this._tangle.bind(this);
-	var strShader = gl.getShaderSource(mShader);
-	
-	this._uiContainer = document.createElement("div");
-	this._uiContainer.className = "TangledShader";
-	document.body.appendChild(this._uiContainer);
-	var p = document.createElement("p");
-	this._uiContainer.appendChild(p);
-	p.className = "TangledShader-tangleScript";
-	this._formTangle(strShader);
-
-	this.btnArrow = document.createElement("div");
-	this.btnArrow.className = "TangledShader-closeButton";
-	this._uiContainer.appendChild(this.btnArrow);
-	this.btnArrow.addEventListener("click", this._onToggle.bind(this));
-};
-
-
-p._onToggle = function() {
-	this.isOpened = !this.isOpened;
-	if(this.isOpened) this._uiContainer.classList.remove("is-Closed");
-	else this._uiContainer.classList.add("is-Closed");
-};
-
-
-p._formTangle = function(str) {
-	var p = document.querySelector('.TangledShader-tangleScript');
-	p.classList.remove("is-Error");
-	var strP            = "";
-	var reg             = new RegExp(/(?![vec]|[\(]|[GLSLIFY\s]|[mat]|[\,]|[\*]|[\-]|[\+]|[sampler]).\d*\.+\d+/g);
-	var match;
-	var values          = [];
-	var i               = 0;
-	var preIndex        = 0;
-	this._tangleStrings = [];
-
-	while (match = reg.exec(str)) {
-		var strBefore  = str.substring(preIndex, match.index);
-		preIndex       = reg.lastIndex;
-		var value      = parseFloat(match);
-		values.push(value);
-		var precision  = this.getPrecision(value);
-		var step       = this.getStep(precision);
-		var valueRange = this.getValueRange(value);
-		var strBeforeP = formHTMLString(strBefore);
-
-		strP += strBeforeP;
-		this._tangleStrings.push(strBefore);
-		strP += '<span class="TKAdjustableNumber" data-var="data'+i+'" data-min="'+valueRange.min+'" data-max="'+valueRange.max+'" data-step="'+step+'" data-format="%.' + precision + 'f"></span>';
-		i++;
-	}
-
-	if(i == 0 ) {
-		p.innerHTML = "";
-		return;
-	}
-
-	var strLeft = str.substring(preIndex);
-	this._tangleStrings.push(strLeft);
-	strLeft = formHTMLString(strLeft);
-	strP += strLeft;
-	strP = strP.replace(/\n/g, "<br/>").replace(/\t/g, "&emsp;&emsp;&emsp;&emsp;");
-	
-	p.innerHTML = strP;
-
-	var that = this;
-
-	var modelRange = {
-		initialize: function () {
-			this.numData = 0;
-			for(var i=0; i<values.length;i++) {
-				this["data" + i] = values[i];
-				this.numData ++;
-			}
-		},
-		update: function () {
-			var ary = [];
-			for(var i=0; i<this.numData; i++) {
-				ary.push(this["data"+i]);
-			}
-			that._tangleBind(ary);
-		}
-	}
-
-	var tangleRange = new Tangle(p, modelRange);
-};
-
-
-p._tangle = function(tangle) {
-	var strNewShader = "";
-	for(var i=0; i<tangle.length; i++) {
-		strNewShader += this._tangleStrings[i];
-		strNewShader += this.getFloatString(tangle[i]);
-	}
-
-	strNewShader += this._tangleStrings[this._tangleStrings.length-1];
-
-	gl.shaderSource(this._shader, strNewShader);
-	gl.compileShader(this._shader);
-
-	if(!gl.getShaderParameter(this._shader, gl.COMPILE_STATUS)) {
-		console.warn("Error in Fragment Shader: ", gl.getShaderInfoLog(this._shader));
-		console.warn(gl.getShaderSource(this._shader));
-		var p = document.querySelector('.TangledShader-tangleScript');
-		p.classList.add("is-Error");
-		return;
-	}
-	this._program.attachShaderProgram();
-};
-
-
-p.getPrecision = function(value) {	return 2;	};
-
-p.getStep = function(mPrecision) {	return 1/Math.pow(10, mPrecision);	};
-
-p.getValueRange = function(value) {
-	var tmp = Math.floor(value*10);
-	if(tmp == 0) tmp = 1;
-	return {max:tmp, min:-tmp};
-};
-
-p.getFloatString = function(value) {
-	var s = value +'';
-	if(s.indexOf(".") == -1) s += '.0';
-	return s;
-};
-
-module.exports = new ShaderTangle();
-},{}],6:[function(require,module,exports){
+},{"./ViewMountain":5,"./ViewNoise":6,"./ViewNormal":7}],5:[function(require,module,exports){
 // ViewMountain.js
 
 var GL = bongiovi.GL;
@@ -4726,21 +4579,23 @@ p.render = function(textureHeight, textureNormal, texture) {
 };
 
 module.exports = ViewMountain;
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // ViewNoise.js
 
 
 var GL = bongiovi.GL;
 var gl;
 
-var ShaderTangle = require("./ShaderTangle");
+// var ShaderTangle = require("./ShaderTangle");
 
 function ViewNoise() {
 	gl = GL.gl;
 	bongiovi.View.call(this, null, "#define GLSLIFY 1\n\nprecision mediump float;\nvarying vec2 vTextureCoord;\n\nuniform sampler2D texture;\n\nfloat map(float value, float sx, float sy, float tx, float ty) {\n\tfloat p = (value - sx) / ( sy - sx);\n\treturn tx + p * ( ty - tx);\n}\n\n\nfloat hash( vec2 p ) {\n\tfloat h = dot(p,vec2(127.1,311.7)); \n\treturn fract(sin(h)*43758.5453123);\n}\n\nfloat noise( in vec2 p ) {\n\tvec2 i = floor( p );\n\tvec2 f = fract( p );    \n\tvec2 u = f*f*(3.0-2.0*f);\n\treturn -1.0+2.0*mix( mix( hash( i + vec2(0.0,0.0) ), \n\t\t\t\t\t hash( i + vec2(1.0,0.0) ), u.x),\n\t\t\t\tmix( hash( i + vec2(0.0,1.0) ), \n\t\t\t\t\t hash( i + vec2(1.0,1.0) ), u.x), u.y);\n}\n\nconst float RX = 1.6;\nconst float RY = 1.2;\nconst mat2 rotation = mat2(RX,RY,-RY,RX);\nconst int NUM_ITER = 10;\nconst float PI = 3.141592657;\nuniform float time;\n\nvoid main(void) {   \n\tfloat offset = 5.000;\n\tvec2 uv = vTextureCoord + time;\n\tfloat grey = 0.0;\n\n\tfloat scale = 0.5;\n\tfor(int i=0; i<NUM_ITER; i++) {\n\t\tgrey += noise(uv*offset) * scale;\n\t\toffset *= 1.5;\n\t\tscale *= 0.22;\n\t\tuv *= rotation;\n\t}\n\n\tgrey = (grey + 1.0) * 0.5;\n\tvec3 color = vec3(grey);\n\n\tfloat center = 0.5 + noise(vTextureCoord * 5.01 + time) * 0.1;\n\n\tfloat offsetX = 0.0;\n\tif(vTextureCoord.x < center) offsetX = map(vTextureCoord.x, 0.0, center, 0.0, 0.5);\n\telse offsetX = map(vTextureCoord.x, center, 1.0, 0.5, 0.0);\n\tconst float POWER = 3.05;\n\tconst float THETA = 0.4;\n\toffsetX = tan(offsetX * PI * THETA);\n\toffsetX = pow(offsetX, POWER);\n\t\n\tgrey = mix(offsetX, grey, 0.25);\n\tfloat r = sin(vTextureCoord.y*PI) * sin(vTextureCoord.x*PI);\n\tgrey *= pow(r, 1.0);\n\n\tgl_FragColor = vec4(vec3(grey), 1.0);\n\n}");
 
 	console.log(this.shader.fragmentShader);
-	ShaderTangle.load(this.shader.fragmentShader, this.shader);
+	// ShaderTangle.load(this.shader.fragmentShader, this.shader);
+
+	new TangledShader(gl, this.shader.fragmentShader, this._onShaderUpdate.bind(this));
 }
 
 var p = ViewNoise.prototype = new bongiovi.View();
@@ -4751,13 +4606,17 @@ p._init = function() {
 	this.mesh = bongiovi.MeshUtils.createPlane(2, 2, 1);
 };
 
+p._onShaderUpdate = function(shader) {
+	this.shader.attachShaderProgram();
+};
+
 p.render = function() {
 	this.shader.bind();
 	GL.draw(this.mesh);
 };
 
 module.exports = ViewNoise;
-},{"./ShaderTangle":5}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var GL = bongiovi.GL;
 var gl;
 
@@ -4782,7 +4641,7 @@ p.render = function(texture) {
 };
 
 module.exports = ViewNormal;
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // app.js
 window.bongiovi = require("./libs/bongiovi.js");
 var dat = require("dat-gui");
@@ -4813,6 +4672,7 @@ var dat = require("dat-gui");
 		this.canvas = document.createElement("canvas");
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
+		this.canvas.className = "Main-Canvas";
 		document.body.appendChild(this.canvas);
 		bongiovi.GL.init(this.canvas);
 
@@ -4830,7 +4690,7 @@ var dat = require("dat-gui");
 
 
 new App();
-},{"./SceneApp":4,"./libs/bongiovi.js":10,"dat-gui":1}],10:[function(require,module,exports){
+},{"./SceneApp":4,"./libs/bongiovi.js":9,"dat-gui":1}],9:[function(require,module,exports){
 (function (global){
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.bongiovi = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 "use strict";
@@ -17084,4 +16944,4 @@ module.exports = ViewCopy;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[9]);
+},{}]},{},[8]);

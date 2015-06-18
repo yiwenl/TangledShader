@@ -28,6 +28,7 @@ var dat = require("dat-gui");
 		this.canvas = document.createElement("canvas");
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
+		this.canvas.className = "Main-Canvas";
 		document.body.appendChild(this.canvas);
 		bongiovi.GL.init(this.canvas);
 
