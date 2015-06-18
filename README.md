@@ -31,7 +31,7 @@ function shaderUpdated( shader ) {
 	//  render .... 
 }
 </pre>
-
+<br />
 ---
 ###With Shader String (e.g. using three.js)
 <pre>
